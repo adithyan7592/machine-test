@@ -9,19 +9,22 @@ function Menupage() {
   const [loading, setLoading] = useState(true);
   const [showNav, setShowNav] = useState(false); // state for mobile nav toggle
 
+  // Use the environment variable for the backend URL; defaults to localhost if not set
+  const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
+
   useEffect(() => {
     fetchMenus();
   }, []);
 
   const fetchMenus = async () => {
     try {
-      const menuResponse = await axios.get("http://localhost:5001/api/menus");
+      const menuResponse = await axios.get(`${backendURL}/api/menus`);
       const menusData = menuResponse.data;
 
       const updatedMenus = [];
       for (const menu of menusData) {
         const itemResponse = await axios.get(
-          `http://localhost:5001/api/items/${menu._id}`
+          `${backendURL}/api/items/${menu._id}`
         );
         updatedMenus.push({
           ...menu,
@@ -123,7 +126,7 @@ function Menupage() {
         </div>
       </section>
 
-    
+      {/* FOOTER */}
       <footer className="footer">
         <div className="footer-left">
           <img src={logo} alt="Deep Net Soft Logo" className="footer-logo" />
@@ -142,5 +145,6 @@ function Menupage() {
 }
 
 export default Menupage;
+
 
 
